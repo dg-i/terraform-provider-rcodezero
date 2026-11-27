@@ -1,0 +1,11 @@
+package: rcode0api
+output: client.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  include-operation-ids: &ops [AddZone, GetZoneDetails, UpdateZone, PatchZone, DeleteZone]
+  # Schema names like AddZoneResponse collide with the generated client wrappers.
+  response-type-suffix: Result
+  overlay:
+    path: ../../api/overlay.yaml

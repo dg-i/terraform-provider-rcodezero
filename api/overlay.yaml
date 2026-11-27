@@ -1,0 +1,43 @@
+# Fixes applied to the vendored RcodeZero spec before code generation.
+overlay: 1.0.0
+info:
+  title: RcodeZero spec fixes
+  version: 1.0.0
+actions:
+  # The spec documents no error responses at all. The real API answers e.g. an
+  # unknown zone with 404 {"status":"failed","message":"Zone not found"}
+  # (verified 2026-11-19). Auth errors don't follow this shape.
+  - target: $.components.schemas
+    update:
+      Error:
+        type: object
+        required: [status, message]
+        properties:
+          status:
+            $ref: '#/components/schemas/status'
+          message:
+            type: string
+  - target: $.paths['/api/v2/zones'].post.responses
+    update:
+      default: &error
+        description: Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+  - target: $.paths['/api/v2/zones/{zone}'].get.responses
+    update:
+      default: *error
+  - target: $.paths['/api/v2/zones/{zone}'].put.responses
+    update:
+      default: *error
+  - target: $.paths['/api/v2/zones/{zone}'].patch.responses
+    update:
+      default: *error
+  - target: $.paths['/api/v2/zones/{zone}'].delete.responses
+    update:
+      default: *error
+  # The real API omits serial_auto_increment for slave zones (verified
+  # 2026-11-19), so it can't be required; generated as *bool instead.
+  - target: $.components.schemas.ZoneDetails.required[?(@ == 'serial_auto_increment')]
+    remove: true

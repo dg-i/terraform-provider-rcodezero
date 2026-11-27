@@ -1,0 +1,18 @@
+# Provider and mock binaries (make build)
+bin/
+
+# Terraform / OpenTofu state and working directories
+**/.terraform/
+**/.terraform.lock.hcl
+**/*.tfstate
+**/*.tfstate.backup
+*.tfvars
+!examples/dev/mock.tfvars
+
+# GoReleaser output
+dist/
+
+# Other locations to ignore
+.envrc
+.secrets
+.DS_Store

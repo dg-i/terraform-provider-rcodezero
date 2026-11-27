@@ -1,0 +1,9 @@
+# Usage: make build, then
+#   TF_CLI_CONFIG_FILE=$PWD/dev.tofurc tofu plan   (no `tofu init` needed)
+# Relative paths resolve against the directory tofu runs in, so run it from examples/dev/.
+provider_installation {
+  dev_overrides {
+    "registry.terraform.io/dg-i/rcodezero" = "../../bin"
+  }
+  direct {}
+}

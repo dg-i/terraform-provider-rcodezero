@@ -1,0 +1,11 @@
+package: mockserver
+output: api.gen.go
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output-options:
+  include-operation-ids: [AddZone, GetZoneDetails, UpdateZone, PatchZone, DeleteZone]
+  overlay:
+    path: ../../api/overlay.yaml
